@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
     <title>TextAlive App API | basic example</title>
-    <link rel="stylesheet" href="index.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="index.css">
   </head>
   <body>
     <div id="overlay"><button class="play" disabled>再生</button></div>
@@ -39,6 +39,9 @@
         <button id="rewind" disabled>巻き戻し</button>
       </div>
     </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/textalive-app-api/dist/index.js"></script>
     <script type="module" src="./index.js"></script>
   </body>
 </html>
