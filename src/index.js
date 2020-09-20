@@ -8,36 +8,22 @@
  * https://developer.textalive.jp/app/
  */
 
-import { Player } from "textalive-app-api";
+//import { Player } from "https://taisukef.github.io/textalive-app-api/dist/index.es.js";
+const { Player } = TextAliveApp;
 
-// 単語が発声されていたら #text に表示する
-// Show words being vocalized in #text
-const animateWord = function (now, unit) {
+const animateWord = (now, unit) => {
   if (unit.contains(now)) {
-    document.querySelector("#text").textContent = unit.text;
+    text.textContent = unit.text;
   }
 };
 
-// TextAlive Player を作る
-// Instantiate a TextAlive Player instance
 const player = new Player({
   app: {
-    appAuthor: "Jun Kato",
-    appName: "Basic example",
+    appAuthor: "Taisuke Fukuno",
+    appName: "Liric Flow",
+    songUrl: "http://www.youtube.com/watch?v=ygY2qObZv24", // 無効?
   },
-  mediaElement: document.querySelector("#media"),
-});
-
-// TextAlive Player のイベントリスナを登録する
-// Register event listeners
-player.addListener({
-  onAppReady,
-  onVideoReady,
-  onTimerReady,
-  onThrottledTimeUpdate,
-  onPlay,
-  onPause,
-  onStop,
+  mediaElement: media,
 });
 
 const playBtns = document.querySelectorAll(".play");
@@ -49,12 +35,8 @@ const positionEl = document.querySelector("#position strong");
 const artistSpan = document.querySelector("#artist span");
 const songSpan = document.querySelector("#song span");
 
-/**
- * TextAlive App が初期化されたときに呼ばれる
- *
- * @param {IPlayerApp} app - https://developer.textalive.jp/packages/textalive-app-api/interfaces/iplayerapp.html
- */
-function onAppReady(app) {
+const onAppReady = (app) => {
+  console.log(app);
   // TextAlive ホストと接続されていなければ再生コントロールを表示する
   // Show control if this app is launched standalone (not connected to a TextAlive host)
   if (!app.managed) {
@@ -90,21 +72,13 @@ function onAppReady(app) {
     document.querySelector("#header a").setAttribute("href", "https://textalivejp.github.io/textalive-app-basic/");
   }
 
-  // 楽曲URLが指定されていなければ マジカルミライ 2020テーマ曲を読み込む
-  // Load a song when a song URL is not specified
+  console.log(app);
   if (!app.songUrl) {
     player.createFromSongUrl("http://www.youtube.com/watch?v=ygY2qObZv24");
   }
 }
 
-/**
- * 動画オブジェクトの準備が整ったとき（楽曲に関する情報を読み込み終わったとき）に呼ばれる
- *
- * @param {IVideo} v - https://developer.textalive.jp/packages/textalive-app-api/interfaces/ivideo.html
- */
 function onVideoReady(v) {
-  // メタデータを表示する
-  // Show meta data
   artistSpan.textContent = player.data.song.artist.name;
   songSpan.textContent = player.data.song.name;
 
@@ -164,3 +138,13 @@ function onPause() {
 function onStop() {
   document.querySelector("#text").textContent = "-";
 }
+
+player.addListener({
+  onAppReady,
+  onVideoReady,
+  onTimerReady,
+  onThrottledTimeUpdate,
+  onPlay,
+  onPause,
+  onStop,
+});
